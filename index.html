@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediRust — Medicatie-herinneringen, volledig offline</title>
+<style>
+  :root {
+    --primary: #0D3B66;
+    --secondary: #00655A;
+    --bg: #F7F9FC;
+    --text: #0A0A0A;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: var(--primary);
+    color: white;
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+  header h1 { margin: 0 0 0.5rem; font-size: 2.2rem; }
+  header p { margin: 0; font-size: 1.15rem; opacity: 0.9; }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+  }
+  section { margin-bottom: 2.5rem; }
+  h2 { color: var(--primary); }
+  .feature-list { list-style: none; padding: 0; }
+  .feature-list li {
+    padding: 0.75rem 0 0.75rem 2rem;
+    position: relative;
+    font-size: 1.05rem;
+  }
+  .feature-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-weight: bold;
+  }
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem 3rem;
+    color: #555;
+    font-size: 0.95rem;
+  }
+  footer a { color: var(--primary); }
+  .disclaimer {
+    background: white;
+    border-left: 4px solid var(--secondary);
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+    color: #333;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MediRust</h1>
+  <p>Op tijd medicijnen innemen — rustig, betrouwbaar, volledig offline.</p>
+</header>
+
+<main>
+  <section>
+    <h2>Wat MediRust doet</h2>
+    <p>
+      MediRust is een eenvoudige Android-app die helpt herinneren aan medicatie-inname,
+      bijhoudt wat er daadwerkelijk is ingenomen, en dat overzicht desgewenst deelt met
+      een familielid, mantelzorger of zorgverlener.
+    </p>
+    <ul class="feature-list">
+      <li>Duidelijke herinneringen op het juiste moment</li>
+      <li>Grote, overzichtelijke knoppen — gemaakt met senioren in gedachten</li>
+      <li>Een eerlijk overzicht: ingenomen, overgeslagen, of gewoon "weet ik niet meer"</li>
+      <li>Delen als PDF of tekst, wanneer u dat zelf kiest</li>
+      <li>100% offline — geen account, geen cloud, geen internet nodig</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Privacy</h2>
+    <p>
+      MediRust verzamelt, verzendt of deelt geen enkel gegeven. Alles blijft op uw eigen
+      toestel. Lees de volledige <a href="privacybeleid.html">privacyverklaring</a>.
+    </p>
+  </section>
+
+  <section>
+    <div class="disclaimer">
+      MediRust is een hulpmiddel om u te herinneren aan uw medicatie-inname. Het is geen
+      medisch hulpmiddel en vervangt geen advies van een arts of apotheker.
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Vragen? Neem contact op via <a href="mailto:support.medirust@gmail.com">support.medirust@gmail.com</a></p>
+</footer>
+
+</body>
+</html>

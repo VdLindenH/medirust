@@ -1,112 +1,246 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="nl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MediRust — Medicatie-herinneringen, volledig offline</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MediRust: duidelijke medicijnherinneringen</title>
+<meta name="description" content="Duidelijke medicijnherinneringen voor ouderen en mantelzorgers. Zonder account, zonder internet, zonder advertenties. Een maand gratis uitproberen, daarna eenmalig.">
+<link rel="icon" href="img/icoon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
 <style>
+  /* Layout: één leesbare kolom met een open kop (tekst + telefoon), daarna drie schermen en blokken met functies; groot lettertype voor ouderen. */
   :root {
-    --primary: #0D3B66;
-    --secondary: #00655A;
-    --bg: #F7F9FC;
-    --text: #0A0A0A;
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --ink: #0f2238;
+    --muted: #4a5c6f;
+    --brand: #0d3b66;
+    --sky: #2b8cff;
+    --line: #d6e0eb;
+    --ok: #1b7a3d;
+    --font: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
   }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c1622; --surface: #132233; --ink: #e8eef5; --muted: #a2b3c4;
+      --brand: #9cc8ff; --sky: #5aa8ff; --line: #24384d; --ok: #63c98a; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c1622; --surface: #132233; --ink: #e8eef5; --muted: #a2b3c4;
+    --brand: #9cc8ff; --sky: #5aa8ff; --line: #24384d; --ok: #63c98a; color-scheme: dark;
+  }
+
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     background: var(--bg);
-    color: var(--text);
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: 1.1875rem;
     line-height: 1.6;
+    padding-inline: 16px;
+    padding-block: 0 48px;
   }
-  header {
-    background: var(--primary);
-    color: white;
-    padding: 3rem 1.5rem;
-    text-align: center;
+  a { color: var(--brand); }
+  a:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; border-radius: 4px; }
+  .pagina { max-width: 64rem; margin-inline: auto; display: grid; gap: 4rem; }
+
+  /* Kop */
+  .kop {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2.5rem;
+    align-items: center;
+    padding-top: clamp(2rem, 6vw, 4.5rem);
   }
-  header h1 { margin: 0 0 0.5rem; font-size: 2.2rem; }
-  header p { margin: 0; font-size: 1.15rem; opacity: 0.9; }
-  main {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 2.5rem 1.5rem;
+  .merk { display: flex; align-items: center; gap: 1rem; }
+  .merk img { width: 64px; height: 64px; border-radius: 16px; }
+  .merk span { font-size: 1.5rem; font-weight: 700; color: var(--brand); }
+  .kop h1 {
+    margin: 1.5rem 0 1rem;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.15;
+    text-wrap: balance;
   }
-  section { margin-bottom: 2.5rem; }
-  h2 { color: var(--primary); }
-  .feature-list { list-style: none; padding: 0; }
-  .feature-list li {
-    padding: 0.75rem 0 0.75rem 2rem;
-    position: relative;
-    font-size: 1.05rem;
+  .kop .lead { margin: 0; max-width: 34rem; color: var(--muted); font-size: 1.25rem; }
+  .actie { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; margin-top: 1.75rem; }
+  .badge img { display: block; height: 72px; width: auto; }
+  .badge:focus-visible { outline-offset: 0; }
+  .actie p { margin: 0; color: var(--muted); font-size: 1rem; max-width: 18rem; }
+  .kenmerken {
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem;
+    list-style: none; margin: 1.75rem 0 0; padding: 0; font-size: 1rem;
   }
-  .feature-list li::before {
-    content: "✓";
-    position: absolute;
-    left: 0;
-    color: var(--secondary);
-    font-weight: bold;
+  .kenmerken li { display: flex; align-items: center; gap: 0.4rem; }
+  .kenmerken li::before { content: "✓"; color: var(--ok); font-weight: 700; }
+  .telefoon {
+    width: 240px; max-width: 100%;
+    border-radius: 28px; border: 1px solid var(--line);
+    box-shadow: 0 18px 40px -18px rgba(13, 59, 102, 0.35);
+    background: var(--surface);
   }
+
+  /* Schermen */
+  .schermen h2, .blok h2 { margin: 0 0 1.25rem; font-size: 1.625rem; line-height: 1.25; color: var(--brand); text-wrap: balance; }
+  .rij {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem;
+  }
+  figure { margin: 0; display: grid; gap: 0.75rem; justify-items: center; }
+  figure img { width: 100%; max-width: 260px; border-radius: 22px; border: 1px solid var(--line); background: var(--surface); }
+  figcaption { font-size: 1rem; color: var(--muted); text-align: center; max-width: 16rem; }
+
+  /* Functies */
+  .blokken { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem 3.5rem; }
+  .blok { min-width: 0; }
+  .blok ul { margin: 0; padding-left: 1.25rem; display: grid; gap: 0.6rem; }
+  .blok p { margin: 0; }
+  .voorbeeld {
+    margin-top: 1.25rem; padding: 1rem 1.25rem;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    font-size: 1rem;
+  }
+  .voorbeeld strong { display: block; margin-bottom: 0.5rem; }
+  .voorbeeld table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  .voorbeeld th, .voorbeeld td { text-align: left; padding: 0.3rem 0.5rem 0.3rem 0; border-top: 1px solid var(--line); }
+  .voorbeeld th { font-weight: 400; color: var(--muted); border-top: 0; }
+
+  /* Proefmaand en afsluiting */
+  .proef {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    display: grid; gap: 1.25rem;
+  }
+  .proef h2 { margin: 0; font-size: 1.625rem; color: var(--brand); }
+  .proef p { margin: 0; max-width: 46rem; }
+  .disclaimer { margin: 0; font-size: 1rem; color: var(--muted); max-width: 46rem; }
+
   footer {
-    text-align: center;
-    padding: 2rem 1.5rem 3rem;
-    color: #555;
-    font-size: 0.95rem;
+    border-top: 1px solid var(--line); padding-top: 1.5rem;
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem;
+    font-size: 1rem; color: var(--muted);
   }
-  footer a { color: var(--primary); }
-  .disclaimer {
-    background: white;
-    border-left: 4px solid var(--secondary);
-    padding: 1rem 1.25rem;
-    font-size: 0.95rem;
-    color: #333;
-    border-radius: 4px;
+  footer p { margin: 0; }
+
+  @media (max-width: 760px) {
+    .kop { grid-template-columns: minmax(0, 1fr); }
+    .kop .telefoon { display: none; }
+    .blokken { grid-template-columns: minmax(0, 1fr); }
+    .rij { grid-template-columns: repeat(3, minmax(180px, 1fr)); overflow-x: auto; padding-bottom: 0.5rem; }
   }
 </style>
 </head>
 <body>
+<div class="pagina">
+  <header class="kop">
+    <div>
+      <div class="merk">
+        <img src="img/icoon.png" alt="" width="64" height="64">
+        <span>MediRust</span>
+      </div>
+      <h1>Heeft u uw medicijnen vanochtend al gehad? Met MediRust weet u het zeker.</h1>
+      <p class="lead">Duidelijke medicijnherinneringen voor ouderen en mantelzorgers. De app herinnert u op het juiste moment, u vinkt met één tik af wat u gebruikt heeft, en u ziet meteen hoe het gaat.</p>
+      <div class="actie">
+        <a class="badge" href="https://play.google.com/store/apps/details?id=com.medirust.app">
+          <img src="img/google-play-badge.png" alt="Ontdek het op Google Play" width="186" height="72">
+        </a>
+        <p>Een maand gratis uitproberen, daarna eenmalig. Geen abonnement.</p>
+      </div>
+      <ul class="kenmerken">
+        <li>Zonder account</li>
+        <li>Zonder internet</li>
+        <li>Zonder advertenties</li>
+        <li>Telefoon en tablet</li>
+      </ul>
+    </div>
+    <img class="telefoon" src="img/vandaag.webp" alt="Het scherm Vandaag van MediRust met de medicijnen voor de ochtend" width="240" height="480">
+  </header>
 
-<header>
-  <h1>MediRust</h1>
-  <p>Op tijd medicijnen innemen — rustig, betrouwbaar, volledig offline.</p>
-</header>
-
-<main>
-  <section>
-    <h2>Wat MediRust doet</h2>
-    <p>
-      MediRust is een eenvoudige Android-app die helpt herinneren aan medicatie-inname,
-      bijhoudt wat er daadwerkelijk is ingenomen, en dat overzicht desgewenst deelt met
-      een familielid, mantelzorger of zorgverlener.
-    </p>
-    <ul class="feature-list">
-      <li>Duidelijke herinneringen op het juiste moment</li>
-      <li>Grote, overzichtelijke knoppen — gemaakt met senioren in gedachten</li>
-      <li>Een eerlijk overzicht: ingenomen, overgeslagen, of gewoon "weet ik niet meer"</li>
-      <li>Delen als PDF of tekst, wanneer u dat zelf kiest</li>
-      <li>100% offline — geen account, geen cloud, geen internet nodig</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>Privacy</h2>
-    <p>
-      MediRust verzamelt, verzendt of deelt geen enkel gegeven. Alles blijft op uw eigen
-      toestel. Lees de volledige <a href="privacybeleid.html">privacyverklaring</a>.
-    </p>
-  </section>
-
-  <section>
-    <div class="disclaimer">
-      MediRust is een hulpmiddel om u te herinneren aan uw medicatie-inname. Het is geen
-      medisch hulpmiddel en vervangt geen advies van een arts of apotheker.
+  <section class="schermen" aria-labelledby="schermen">
+    <h2 id="schermen">Zo ziet MediRust eruit</h2>
+    <div class="rij">
+      <figure>
+        <img src="img/vandaag.webp" alt="Scherm Vandaag met drie medicijnen om 08:00 en een knop Alles gebruikt" width="260" height="520" loading="lazy">
+        <figcaption>Medicijnen op hetzelfde tijdstip bij elkaar, met één knop "Alles gebruikt".</figcaption>
+      </figure>
+      <figure>
+        <img src="img/herinnering.webp" alt="Herinnering op het volledige scherm met grote knoppen" width="260" height="520" loading="lazy">
+        <figcaption>Een herinnering op het volledige scherm, ook als uw telefoon vergrendeld is.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/afbouwschema.webp" alt="Afbouwschema in vier stappen in het bewerkscherm" width="260" height="520" loading="lazy">
+        <figcaption>Ook een afbouwschema stelt u eenvoudig in.</figcaption>
+      </figure>
     </div>
   </section>
-</main>
 
-<footer>
-  <p>Vragen? Neem contact op via <a href="mailto:support.medirust@gmail.com">support.medirust@gmail.com</a></p>
-</footer>
+  <div class="blokken">
+    <section class="blok" aria-labelledby="ouderen">
+      <h2 id="ouderen">Gemaakt voor ouderen en mantelzorgers</h2>
+      <ul>
+        <li>Grote knoppen en duidelijke letters, in drie tekstgroottes.</li>
+        <li>Medicijnen op hetzelfde tijdstip ziet u bij elkaar: één herinnering en één knop "Alles gebruikt".</li>
+        <li>Een herinnering die u niet mist: op het volledige scherm, ook als uw telefoon vergrendeld is. Reageert u niet, dan komt hij terug.</li>
+        <li>Bel met één tik uw mantelzorger of familielid, rechtstreeks vanuit de app.</li>
+      </ul>
+    </section>
 
+    <section class="blok" aria-labelledby="perdag">
+      <h2 id="perdag">Ook als het per dag verschilt</h2>
+      <ul>
+        <li>Elke dag, op vaste dagen, om de zoveel dagen of een paar keer per maand.</li>
+        <li>Afbouwschema's, kuren met een pauze, en een dosis die per dag verschilt.</li>
+        <li>Zo nodig, met een waarschuwing als u te kort na de vorige keer opnieuw iets neemt.</li>
+        <li>Tabletten, capsules, druppels, zalf, pleisters, inhalatoren en meer. Bij oogdruppels staat er gewoon bij: linkeroog, rechteroog of beide ogen.</li>
+      </ul>
+      <div class="voorbeeld">
+        <strong>Voorbeeld: prednison afbouwen</strong>
+        <table>
+          <thead><tr><th scope="col">Stap</th><th scope="col">Per keer</th><th scope="col">Hoe lang</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>4 tabletten</td><td>3 dagen</td></tr>
+            <tr><td>2</td><td>3 tabletten</td><td>3 dagen</td></tr>
+            <tr><td>3</td><td>2 tabletten</td><td>3 dagen</td></tr>
+            <tr><td>4</td><td>1 tablet</td><td>3 dagen</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:0.6rem">MediRust herinnert u elke dag aan de juiste hoeveelheid.</p>
+      </div>
+    </section>
+
+    <section class="blok" aria-labelledby="overzicht">
+      <h2 id="overzicht">Houd het overzicht</h2>
+      <ul>
+        <li>Zie terug wat u gebruikt, overgeslagen of vergeten heeft.</li>
+        <li>Deel een overzicht als pdf met uw arts, apotheker of mantelzorger. Bovenaan staat per medicijn hoe het de afgelopen 30 dagen ging.</li>
+        <li>Krijg een seintje als uw voorraad bijna op is, of als een medicijn niet lang meer goed is.</li>
+      </ul>
+    </section>
+
+    <section class="blok" aria-labelledby="privacy">
+      <h2 id="privacy">Volledig offline, volledig privé</h2>
+      <p>MediRust verzamelt, verzendt of deelt geen enkel gegeven. Alles wat u invoert blijft op uw eigen telefoon. U heeft geen account en geen internetverbinding nodig, en er zijn geen advertenties of trackers. Lees ook het <a href="privacybeleid.html">privacybeleid</a>.</p>
+    </section>
+  </div>
+
+  <section class="proef" aria-labelledby="proefmaand">
+    <h2 id="proefmaand">Een maand gratis uitproberen, daarna eenmalig</h2>
+    <p>U probeert MediRust een maand lang gratis uit, zonder beperkingen. Deze proefmaand start zodra u uw eerste medicijn instelt, of uiterlijk drie dagen na installatie. Daarna koopt u MediRust Premium met een eenmalige aankoop: geen abonnement, en voor altijd. Koopt u niet, dan blijven de herinneringen afgaan op de ingestelde tijden, maar zonder medicijnnamen en zonder afvinken. Uw gegevens blijven altijd bewaard.</p>
+    <div class="actie" style="margin-top:0">
+      <a class="badge" href="https://play.google.com/store/apps/details?id=com.medirust.app">
+        <img src="img/google-play-badge.png" alt="Ontdek het op Google Play" width="186" height="72">
+      </a>
+    </div>
+  </section>
+
+  <p class="disclaimer">MediRust is een hulpmiddel om u te herinneren aan uw medicijnen. MediRust is geen medisch hulpmiddel en stelt geen diagnose, en behandelt, geneest of voorkomt geen enkele aandoening. Raadpleeg voor medisch advies altijd uw arts of apotheker.</p>
+
+  <footer>
+    <p>Vragen of feedback? <a href="mailto:contact@medirust.nl">contact@medirust.nl</a></p>
+    <p><a href="privacybeleid.html">Privacybeleid</a> · MediRust is een app van <a href="https://vdlintelligence.nl">VDLIntelligence</a></p>
+  </footer>
+</div>
 </body>
 </html>

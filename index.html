@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MediRust: duidelijke medicijnherinneringen</title>
-<meta name="description" content="Duidelijke medicijnherinneringen voor ouderen en mantelzorgers. Zonder account, zonder internet, zonder advertenties. Een maand gratis uitproberen, daarna eenmalig.">
+<meta name="description" content="Duidelijke medicijnherinneringen voor ouderen en mantelzorgers. Zonder account, zonder internet en zonder advertenties. Herinneringen altijd gratis, geen abonnement.">
 <link rel="icon" href="img/icoon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -88,11 +88,12 @@
   /* Schermen */
   .schermen h2, .blok h2 { margin: 0 0 1.25rem; font-size: 1.625rem; line-height: 1.25; color: var(--brand); text-wrap: balance; }
   .rij {
-    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem 1.5rem;
   }
   figure { margin: 0; display: grid; gap: 0.75rem; justify-items: center; }
   figure img { width: 100%; max-width: 260px; height: auto; border-radius: 22px; border: 1px solid var(--line); background: var(--surface); }
   figcaption { font-size: 1rem; color: var(--muted); text-align: center; max-width: 16rem; }
+  .rijkop { margin: 2.5rem 0 1.25rem; font-size: 1.375rem; font-weight: 700; color: var(--brand); text-align: center; }
 
   /* Functies */
   .blokken { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem 3.5rem; }
@@ -109,14 +110,17 @@
   .voorbeeld th, .voorbeeld td { text-align: left; padding: 0.3rem 0.5rem 0.3rem 0; border-top: 1px solid var(--line); }
   .voorbeeld th { font-weight: 400; color: var(--muted); border-top: 0; }
 
-  /* Proefmaand en afsluiting */
-  .proef {
+  /* Altijd gratis, Premium en afsluiting */
+  .prijs {
     background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
     padding: clamp(1.5rem, 4vw, 2.5rem);
     display: grid; gap: 1.25rem;
   }
-  .proef h2 { margin: 0; font-size: 1.625rem; color: var(--brand); }
-  .proef p { margin: 0; max-width: 46rem; }
+  .prijs h2 { margin: 0; font-size: 1.625rem; color: var(--brand); }
+  .prijs p { margin: 0; max-width: 46rem; }
+  .prijs .delen { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem 3.5rem; }
+  .prijs .deel { min-width: 0; display: grid; gap: 0.75rem; align-content: start; }
+  .prijs ul { margin: 0; padding-left: 1.25rem; display: grid; gap: 0.6rem; }
   .disclaimer { margin: 0; font-size: 1rem; color: var(--muted); max-width: 46rem; }
 
   footer {
@@ -130,7 +134,19 @@
     .kop { grid-template-columns: minmax(0, 1fr); }
     .kop .telefoon { display: none; }
     .blokken { grid-template-columns: minmax(0, 1fr); }
-    .rij { grid-template-columns: repeat(3, minmax(180px, 1fr)); overflow-x: auto; padding-bottom: 0.5rem; }
+    .prijs .delen { grid-template-columns: minmax(0, 1fr); }
+    .rij { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; }
+    figcaption { font-size: 0.9375rem; }
+    /* Telefoon: vier schermen, en eerst de kop en "Gemaakt voor ouderen en mantelzorgers", dan de plaatjes. */
+    .alleen-breed { display: none; }
+    .blokken { display: contents; }
+    .pagina > .kop { order: 1; }
+    .blok { order: 4; }
+    .blok.blok-ouderen { order: 2; }
+    .schermen { order: 3; }
+    .prijs { order: 5; }
+    .disclaimer { order: 6; }
+    .pagina > footer { order: 7; }
   }
 </style>
 </head>
@@ -143,12 +159,12 @@
         <span>MediRust</span>
       </div>
       <h1>Heeft u uw medicijnen vanochtend al gehad? Met MediRust weet u het zeker.</h1>
-      <p class="lead">Duidelijke medicijnherinneringen voor ouderen en mantelzorgers. De app herinnert u op het juiste moment, u vinkt met één tik af wat u gebruikt heeft, en u ziet meteen hoe het gaat.</p>
+      <p class="lead">Duidelijke medicijnherinneringen voor ouderen en mantelzorgers. De app herinnert u op het juiste moment. U vinkt met één tik af wat u gebruikt heeft en ziet meteen hoe het gaat.</p>
       <div class="actie">
         <a class="badge" href="https://play.google.com/store/apps/details?id=com.medirust.app">
           <img src="img/google-play-badge.png" alt="Ontdek het op Google Play" width="186" height="72">
         </a>
-        <p>Een maand gratis uitproberen, daarna eenmalig. Geen abonnement.</p>
+        <p>Herinneringen altijd gratis. Geen abonnement.</p>
       </div>
       <ul class="kenmerken">
         <li>Zonder account</li>
@@ -157,45 +173,65 @@
         <li>Telefoon en tablet</li>
       </ul>
     </div>
-    <img class="telefoon" src="img/vandaag.webp" alt="Het scherm Vandaag van MediRust met de medicijnen voor de ochtend" width="240" height="480">
+    <img class="telefoon" src="img/vandaag.webp" alt="Het scherm Vandaag van MediRust met de medicijnen van 08:00 en wat straks komt" width="240" height="500">
   </header>
 
   <section class="schermen" aria-labelledby="schermen">
     <h2 id="schermen">Zo ziet MediRust eruit</h2>
     <div class="rij">
       <figure>
-        <img src="img/vandaag.webp" alt="Scherm Vandaag met drie medicijnen om 08:00 en een knop Alles gebruikt" width="260" height="520" loading="lazy">
-        <figcaption>Medicijnen op hetzelfde tijdstip bij elkaar, met één knop "Alles gebruikt".</figcaption>
+        <img src="img/vandaag.webp" alt="Scherm Vandaag met de medicijnen van 08:00, een knop Alles gebruikt en wat straks komt" width="260" height="542" loading="lazy">
+        <figcaption>Vandaag: wat nu aan de beurt is en wat straks komt.</figcaption>
       </figure>
       <figure>
-        <img src="img/herinnering.webp" alt="Herinnering op het volledige scherm met grote knoppen" width="260" height="520" loading="lazy">
-        <figcaption>Een herinnering op het volledige scherm, ook als uw telefoon vergrendeld is.</figcaption>
+        <img src="img/precies-op-tijd.webp" alt="Herinnering met de balk Precies op tijd, Medicijnen voor Moeder om 11:00 en een knop Bel Moeder" width="260" height="542" loading="lazy">
+        <figcaption>Moet het precies op tijd? Dan een eigen geluid en een knop om Moeder te bellen.</figcaption>
+      </figure>
+      <figure class="alleen-breed">
+        <img src="img/medicijnen.webp" alt="Scherm Medicijnen met Lijst meenemen, Heb ik genoeg tot en Weekdoos vullen, en daaronder de medicijnen" width="260" height="542" loading="lazy">
+        <figcaption>Al uw medicijnen op een rij, in gewone taal.</figcaption>
+      </figure>
+    </div>
+    <h3 class="rijkop">Met Premium</h3>
+    <div class="rij">
+      <figure>
+        <img src="img/meekijken.webp" alt="Uitleg bij Laat uw familie meekijken met een voorbeeld van het weekoverzicht in WhatsApp" width="260" height="542" loading="lazy">
+        <figcaption>Uw familie kijkt mee met een weekoverzicht in WhatsApp.</figcaption>
       </figure>
       <figure>
-        <img src="img/afbouwschema.webp" alt="Afbouwschema in vier stappen in het bewerkscherm" width="260" height="520" loading="lazy">
-        <figcaption>Ook een afbouwschema stelt u eenvoudig in.</figcaption>
+        <img src="img/weekdoos.webp" alt="Scherm Weekdoos vullen met per dagdeel de medicijnen en vinkjes" width="260" height="542" loading="lazy">
+        <figcaption>Per dag en per vakje wat er in de weekdoos moet.</figcaption>
+      </figure>
+      <figure class="alleen-breed">
+        <img src="img/genoeg-tot.webp" alt="Scherm Heb ik genoeg tot met per medicijn of de voorraad genoeg is" width="260" height="542" loading="lazy">
+        <figcaption>Heeft u genoeg tot de vakantie of het volgende recept?</figcaption>
       </figure>
     </div>
   </section>
 
   <div class="blokken">
-    <section class="blok" aria-labelledby="ouderen">
+    <section class="blok blok-ouderen" aria-labelledby="ouderen">
       <h2 id="ouderen">Gemaakt voor ouderen en mantelzorgers</h2>
       <ul>
         <li>Grote knoppen en duidelijke letters, in drie tekstgroottes.</li>
-        <li>Medicijnen op hetzelfde tijdstip ziet u bij elkaar: één herinnering en één knop "Alles gebruikt".</li>
+        <li>Rustig beginnen: één vraag per scherm, ook als u een medicijn invoert.</li>
+        <li>Op elke pagina een knop Uitleg, voor wie wil weten hoe het werkt.</li>
         <li>Een herinnering die u niet mist: op het volledige scherm, ook als uw telefoon vergrendeld is. Reageert u niet, dan komt hij terug.</li>
-        <li>Bel met één tik uw mantelzorger of familielid, rechtstreeks vanuit de app.</li>
+        <li>Medicijnen op hetzelfde tijdstip komen samen in één herinnering.</li>
+        <li>Bel uw mantelzorger of familielid rechtstreeks vanuit de app.</li>
+        <li>Houdt u de medicijnen van uw vader of moeder bij? Dan staat er "Medicijnen voor Moeder om 08:00", met een knop om Moeder meteen te bellen.</li>
       </ul>
     </section>
 
     <section class="blok" aria-labelledby="perdag">
       <h2 id="perdag">Ook als het per dag verschilt</h2>
       <ul>
-        <li>Elke dag, op vaste dagen, om de zoveel dagen of een paar keer per maand.</li>
-        <li>Afbouwschema's, kuren met een pauze, en een dosis die per dag verschilt.</li>
-        <li>Zo nodig, met een waarschuwing als u te kort na de vorige keer opnieuw iets neemt.</li>
+        <li>Elke dag, op vaste dagen, één keer of op vaste dagen van de maand. Ook om de zoveel dagen, weken of maanden.</li>
+        <li>Afbouwschema's, zoals bij prednison: eerst 4 tabletten, dan 3, dan 2. MediRust herinnert u elke dag aan de juiste hoeveelheid en stopt vanzelf na de laatste stap.</li>
+        <li>Kuren met een pauze en een dosis die per dag verschilt.</li>
+        <li>Zo nodig met een waarschuwing als u te kort na de vorige keer opnieuw iets neemt.</li>
         <li>Tabletten, capsules, druppels, zalf, pleisters, inhalatoren en meer. Bij oogdruppels staat er gewoon bij: linkeroog, rechteroog of beide ogen.</li>
+        <li>Per medicijn een overzicht in gewone taal: wat, hoeveel, wanneer en tot wanneer.</li>
       </ul>
       <div class="voorbeeld">
         <strong>Voorbeeld: prednison afbouwen</strong>
@@ -212,28 +248,40 @@
       </div>
     </section>
 
-    <section class="blok" aria-labelledby="overzicht">
-      <h2 id="overzicht">Houd het overzicht</h2>
-      <ul>
-        <li>Zie terug wat u gebruikt, overgeslagen of vergeten heeft.</li>
-        <li>Deel een overzicht als pdf met uw arts, apotheker of mantelzorger. Bovenaan staat per medicijn hoe het de afgelopen 30 dagen ging.</li>
-        <li>Krijg een seintje als uw voorraad bijna op is, of als een medicijn niet lang meer goed is.</li>
-      </ul>
+    <section class="blok" aria-labelledby="optijd">
+      <h2 id="optijd">Precies op tijd</h2>
+      <p>Moet een medicijn echt op tijd? Dan klinkt de herinnering als een wekker met een eigen geluid, hoogstens 2 minuten. Reageert u niet, dan komt hij na 5 minuten terug. Wilt u de herhaling bij elk medicijn als wekker? Dat kiest u bij Herinneringen.</p>
     </section>
 
     <section class="blok" aria-labelledby="privacy">
       <h2 id="privacy">Volledig offline, volledig privé</h2>
-      <p>MediRust verzamelt, verzendt of deelt geen enkel gegeven. Alles wat u invoert blijft op uw eigen telefoon. U heeft geen account en geen internetverbinding nodig, en er zijn geen advertenties of trackers. Lees ook het <a href="privacybeleid.html">privacybeleid</a>.</p>
+      <p>MediRust verzamelt, verzendt of deelt geen enkel gegeven. Alles wat u invoert blijft op uw eigen telefoon. MediRust heeft zelfs geen toestemming om internet te gebruiken. Geen account, geen advertenties, geen trackers. Lees ook het <a href="privacybeleid.html">privacybeleid</a>.</p>
     </section>
   </div>
 
-  <section class="proef" aria-labelledby="proefmaand">
-    <h2 id="proefmaand">Een maand gratis uitproberen, daarna eenmalig</h2>
-    <p>U probeert MediRust een maand lang gratis uit, zonder beperkingen. Deze proefmaand start zodra u uw eerste medicijn instelt, of uiterlijk drie dagen na installatie. Daarna koopt u MediRust Premium met een eenmalige aankoop: geen abonnement, en voor altijd. Koopt u niet, dan blijven de herinneringen afgaan op de ingestelde tijden, maar zonder medicijnnamen en zonder afvinken. Uw gegevens blijven altijd bewaard.</p>
-    <div class="actie" style="margin-top:0">
-      <a class="badge" href="https://play.google.com/store/apps/details?id=com.medirust.app">
-        <img src="img/google-play-badge.png" alt="Ontdek het op Google Play" width="186" height="72">
-      </a>
+  <section class="prijs" aria-labelledby="premium">
+    <div class="delen">
+      <div class="deel">
+        <h2 id="gratis">Altijd gratis</h2>
+        <p>Alles wat u nodig heeft om uw medicijnen op tijd te gebruiken: alle herinneringen, alle schema's, onbeperkt medicijnen, uw geschiedenis, de contactpersoon en de belknop. Zonder proefperiode en zonder einddatum.</p>
+        <div class="actie" style="margin-top:0.5rem">
+          <a class="badge" href="https://play.google.com/store/apps/details?id=com.medirust.app">
+            <img src="img/google-play-badge.png" alt="Ontdek het op Google Play" width="186" height="72">
+          </a>
+        </div>
+      </div>
+      <div class="deel">
+        <h2 id="premium">MediRust Premium, voor de extra's</h2>
+        <ul>
+          <li>Laat uw familie meekijken: elke zondag krijgt u een melding dat het weekoverzicht voor uw dochter of zoon klaarstaat. Is er een dosis gemist, dan zet MediRust ook een seintje voor hen klaar. Het bericht opent in WhatsApp of als sms en u kiest alleen nog voor verzenden.</li>
+          <li>Weekdoos vullen: per dag en per vakje wat erin moet, ook bij afbouwen.</li>
+          <li>Uw medicijnlijst om mee te nemen en een overzicht voor de arts, als pdf of tekst.</li>
+          <li>Voorraad bijhouden met een seintje op tijd en "Heb ik genoeg tot...?".</li>
+          <li>Een medicijn pauzeren tot een datum en houdbaarheid na openen.</li>
+          <li>Binnenkort erbij, zonder bijbetalen: meerdere personen in één app, bijvoorbeeld vader én moeder.</li>
+        </ul>
+        <p>Een eenmalige betaling, geen abonnement. Nieuwe extra's krijgt u er vanzelf bij.</p>
+      </div>
     </div>
   </section>
 
